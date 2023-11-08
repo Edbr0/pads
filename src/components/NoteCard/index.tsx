@@ -1,34 +1,32 @@
+import { useState } from "react";
+import { Container, NoteTitle } from "./style";
 
-import { useState } from 'react';
-import { Container, NoteTitle } from './style'
-import { AVPlaybackSource } from 'expo-av';
+export type NoteProps = {
+  selected: boolean;
+  title: string;
+};
 
+type Props = {
+  data: NoteProps;
+  onPress: any;
+};
 
-type NoteProps = {
-    selected: boolean;
-    title: string;
-}
+export function Note({ data, onPress }: Props) {
+  const [buttonDisabled, setButtonDisabled] = useState(false);
+  const { title, selected } = data;
 
-type Props  = {
-    data: NoteProps;
-    onPress: any
+  const play = () => {
+    onPress();
+    setButtonDisabled(true);
+    setTimeout(() => {
+      setButtonDisabled(false);
+    }, 1000);
+    return;
+  };
 
-}
-
-
-export function Note( { data, onPress }: Props){
-    const { title, selected } = data
-
-    const play = () => {
-        onPress()
-        return 
-    }
-
-    return (
-       <Container onPress={ play } selected={  selected }>
-        <NoteTitle>
-            { title }
-        </NoteTitle>
-       </Container> 
-    )
+  return (
+    <Container onPress={play} selected={selected} disabled={buttonDisabled}>
+      <NoteTitle>{title}</NoteTitle>
+    </Container>
+  );
 }
